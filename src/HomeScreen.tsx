@@ -17,53 +17,56 @@ const HomeScreen = (props: HomeScreenProps) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fdf0ff' }}>
-            <View style={styles.container}>
-                <View style={styles.headerTitle}>
-                    <Text style={styles.header}>Have-its</Text>
-                </View>
-                <ScrollView contentContainerStyle={styles.body}>
+        <SafeAreaView style={systemStyle.container}>
+            <View style={systemStyle.header}>
+                <Text style={systemStyle.headerTitle}>Have-its</Text>
+            </View>
+            <View style={systemStyle.body}>
+                <ScrollView contentContainerStyle={systemStyle.scrollview}>
                     <HabitBubble title="A new habit here" color="peach" />
                     <HabitBubble title="A second habit here that's a little bit longer" color="lime" />
                 </ScrollView>
-                <View style={styles.footer}>
-                    <TouchableOpacity activeOpacity={0.6} style={{ padding: 6 }} onPress={onAddBtn}>
-                        <FontAwesome5 name={'plus-circle'} size={42} light />
-                    </TouchableOpacity>
-                </View>
+            </View>
+            <View style={systemStyle.footer}>
+                <TouchableOpacity activeOpacity={0.6} style={{ padding: 6 }} onPress={onAddBtn}>
+                    <FontAwesome5 name={'plus-circle'} size={42} light />
+                </TouchableOpacity>
             </View>
             <StatusBar style="dark" backgroundColor="#fdf0ff" translucent={false} />
         </SafeAreaView>
     );
 };
 
-export default HomeScreen;
-
-const styles = StyleSheet.create({
+export const systemStyle = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: "#fdf0ff",
     },
     body: {
-        paddingVertical: 138,
+        // paddingVertical: 138,
+        flex: 4,
+    },
+    scrollview: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 12,
-    },
-    headerTitle: {
-        flex: 0.3,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 4,
+        flex: 1,
+        minWidth: '100%',
     },
     header: {
+        flex: 1,
+        alignItems: 'center',
+        minWidth: '100%',
+        top: 4,
+    },
+    headerTitle: {
         fontSize: 24,
         fontWeight: 'bold',
     },
     footer: {
-        flex: 0.3,
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
     addBtnCircle: {
@@ -75,3 +78,5 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+
+export default HomeScreen;

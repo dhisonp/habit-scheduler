@@ -17,6 +17,7 @@ export default function App() {
           backgroundColor: 'white',
           elevation: 0,
           shadowOpacity: 0,
+          position: 'absolute',
         }
       }}>
         <Stack.Screen name="Home" component={HomeScreen} />
