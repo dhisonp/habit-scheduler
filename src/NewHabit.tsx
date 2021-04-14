@@ -16,7 +16,7 @@ const NewHabit = (props: NewHabitProps) => {
             <StatusBar backgroundColor='#e0fcff' translucent={false} />
             <View style={styles.body}>
                 <Field placeholder="Habit name" value={name} updateValue={updateName} />
-                <Field placeholder="Description" value={description} updateValue={updateDescription} />
+                <Field placeholder="Description" value={description} updateValue={updateDescription} multiline={true} lines={4} />
                 {/* Time field */}
             </View>
         </View>
