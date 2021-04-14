@@ -5,8 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/HomeScreen';
 import NewHabit from './src/NewHabit';
+import { db, createTable } from './src/database/SQLite';
 
 const Stack = createStackNavigator();
+createTable();
 
 export default function App() {
   return (
