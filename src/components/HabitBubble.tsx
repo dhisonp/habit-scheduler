@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, } from 'react-native';
 
 interface HabitBubbleProps {
-    title: any, //50 character limit
+    id: number;
+    title: string, //50 character limit
     color: string,
+    onPress: any;
 }
 
 const placeholder = "Placeholder text habit here"
@@ -34,11 +36,15 @@ const HabitBubble = (props: HabitBubbleProps) => {
         }
     }
 
+    const onPress = () => {
+        props.onPress(props.title)
+    }
+
     return (
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity activeOpacity={0.6} onPress={onPress}>
             <View style={[styles.container, { backgroundColor: color }]}>
                 <Text>
-                    {props.title}
+                    {props.id}: {props.title}
                 </Text>
             </View>
         </TouchableOpacity>

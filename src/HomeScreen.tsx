@@ -13,25 +13,32 @@ const HomeScreen = (props: HomeScreenProps) => {
 
     const { navigation } = props;
     const [habits, setHabits] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        update();
+    }, [])
 
     const onAddBtn = () => {
         navigation.navigate('NewHabit')
+    }
+
+    const editHabit = (id: string) => {
+        navigation.navigate('EditHabit', { id: id });
     }
 
     const update = () => {
         console.log(db)
         db.transaction(tx => {
             tx.executeSql(
-                'SELECT name from Habits',
+                'SELECT * from Habits',
                 [],
-                (tx, { rows }) => {
-                    setHabits(() => {
-                        let retRA: any = [];
-                        rows._array.forEach(elem => {
-                            retRA.unshift(elem.name);
-                        });
-                        return retRA;
-                    });
+                (tx, results) => {
+                    var temp: any = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    setHabits(temp);
                 },
                 (tx, error) => {
                     console.log("Error: ")
@@ -39,11 +46,12 @@ const HomeScreen = (props: HomeScreenProps) => {
                 }
             );
         });
+        setLoading(false);
     };
 
     const renderHabits = (item: any) => {
         return (
-            <HabitBubble title={item} color="peach" key={item} />
+            <HabitBubble title={item.name} color="peach" key={item.id} onPress={() => editHabit(item.id)} id={item.id} />
         );
     }
 
@@ -52,9 +60,11 @@ const HomeScreen = (props: HomeScreenProps) => {
         console.log(habits)
     }
 
-    if(habits.length === 0){ //Implement loading screen
-        update(); 
-    } 
+    var emptyBody;
+
+    if (!loading && habits.length === 0) {
+        emptyBody = <Text>No habits, create a new one!</Text>
+    }
 
     return (
         <SafeAreaView style={systemStyle.container}>
@@ -63,11 +73,10 @@ const HomeScreen = (props: HomeScreenProps) => {
             </View>
             <View style={systemStyle.body}>
                 <ScrollView contentContainerStyle={systemStyle.scrollview}>
-                    {/* <HabitBubble title="A new habit here" color="peach" />
-                    <HabitBubble title="A second habit here that's a little bit longer" color="lime" /> */}
                     {habits.map(item =>
                         renderHabits(item)
                     )}
+                    {emptyBody}
                 </ScrollView>
             </View>
             <View style={systemStyle.footer}>
@@ -91,6 +100,7 @@ export const systemStyle = StyleSheet.create({
     body: {
         // paddingVertical: 138,
         flex: 4,
+        // minWidth: '100%'
     },
     scrollview: {
         justifyContent: 'center',

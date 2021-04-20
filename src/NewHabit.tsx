@@ -5,6 +5,7 @@ import Field from './components/Field';
 import { systemStyle } from './HomeScreen';
 import db from './database/SQLite';
 import { StackActions } from '@react-navigation/native';
+// import { v4 as uuid } from 'uuid';
 
 interface NewHabitProps {
     navigation: any
@@ -32,6 +33,7 @@ const NewHabit = (props: NewHabitProps) => {
     const onSave = () => {
         if (name === '') { name = "Default name" }
         let newName = name;
+        // let id = uuid();
 
         db.transaction(tx => {
             tx.executeSql('INSERT INTO Habits(name) VALUES (?)', [newName], update());

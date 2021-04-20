@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/HomeScreen';
 import NewHabit from './src/NewHabit';
 import { createTable } from './src/database/SQLite';
+import EditHabit from './src/EditHabit';
 
 const Stack = createStackNavigator();
 createTable();
@@ -24,6 +25,7 @@ export default function App() {
       }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="NewHabit" component={NewHabit} />
+        <Stack.Screen name="EditHabit" component={EditHabit} />
       </Stack.Navigator>
     </NavigationContainer>
   );
