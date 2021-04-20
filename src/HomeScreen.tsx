@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, SafeAreaView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, Platform, ScrollView, TouchableOpacity, Button } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import HabitBubble from './components/HabitBubble';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import db from './database/SQLite';
 
 interface HomeScreenProps {
     navigation: any;
@@ -11,10 +12,49 @@ interface HomeScreenProps {
 const HomeScreen = (props: HomeScreenProps) => {
 
     const { navigation } = props;
+    const [habits, setHabits] = React.useState([]);
 
     const onAddBtn = () => {
         navigation.navigate('NewHabit')
     }
+
+    const update = () => {
+        console.log(db)
+        db.transaction(tx => {
+            tx.executeSql(
+                'SELECT name from Habits',
+                [],
+                (tx, { rows }) => {
+                    setHabits(() => {
+                        let retRA: any = [];
+                        rows._array.forEach(elem => {
+                            retRA.unshift(elem.name);
+                        });
+                        return retRA;
+                    });
+                },
+                (tx, error) => {
+                    console.log("Error: ")
+                    console.log(error);
+                }
+            );
+        });
+    };
+
+    const renderHabits = (item: any) => {
+        return (
+            <HabitBubble title={item} color="peach" key={item} />
+        );
+    }
+
+    const debug = () => {
+        update();
+        console.log(habits)
+    }
+
+    if(habits.length === 0){ //Implement loading screen
+        update(); 
+    } 
 
     return (
         <SafeAreaView style={systemStyle.container}>
@@ -23,14 +63,18 @@ const HomeScreen = (props: HomeScreenProps) => {
             </View>
             <View style={systemStyle.body}>
                 <ScrollView contentContainerStyle={systemStyle.scrollview}>
-                    <HabitBubble title="A new habit here" color="peach" />
-                    <HabitBubble title="A second habit here that's a little bit longer" color="lime" />
+                    {/* <HabitBubble title="A new habit here" color="peach" />
+                    <HabitBubble title="A second habit here that's a little bit longer" color="lime" /> */}
+                    {habits.map(item =>
+                        renderHabits(item)
+                    )}
                 </ScrollView>
             </View>
             <View style={systemStyle.footer}>
                 <TouchableOpacity activeOpacity={0.6} style={{ padding: 6 }} onPress={onAddBtn}>
                     <FontAwesome5 name={'plus-circle'} size={42} light />
                 </TouchableOpacity>
+                <Button title="Debug" onPress={debug} />
             </View>
             <StatusBar style="dark" backgroundColor="#fdf0ff" translucent={false} />
         </SafeAreaView>

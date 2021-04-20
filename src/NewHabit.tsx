@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import Field from './components/Field';
 import { systemStyle } from './HomeScreen';
+import db from './database/SQLite';
+import { StackActions } from '@react-navigation/native';
 
 interface NewHabitProps {
     navigation: any
@@ -15,12 +17,25 @@ const NewHabit = (props: NewHabitProps) => {
     var [description, updateDescription] = React.useState('');
 
     const onBack = () => {
-        props.navigation.goBack();
+        props.navigation.dispatch(
+            StackActions.replace('Home')
+        );
+
+    }
+
+    const update = () => {
+        alert("Saved!")
+        console.log(`New habit entry: ${name}`)
+        onBack();
     }
 
     const onSave = () => {
-        alert("Data saved!");
-        onBack();
+        if (name === '') { name = "Default name" }
+        let newName = name;
+
+        db.transaction(tx => {
+            tx.executeSql('INSERT INTO Habits(name) VALUES (?)', [newName], update());
+        });
     }
 
     return (
