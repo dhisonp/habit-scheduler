@@ -37,7 +37,7 @@ export default Field;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        minWidth: '60%',
+        width: '60%',
         minHeight: 40,
         borderRadius: 14,
         paddingHorizontal: 8,

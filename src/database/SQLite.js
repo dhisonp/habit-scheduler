@@ -5,7 +5,7 @@ const db = SQLite.openDatabase("Data");
 export const createTable = () => {
     db.transaction(tx => {
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS Habits(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(50))',
+            'CREATE TABLE IF NOT EXISTS Habits(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(50), description VARCHAR(255))',
             []
         );
     });

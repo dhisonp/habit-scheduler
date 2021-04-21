@@ -5,6 +5,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import db from './database/SQLite';
 import { StackActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import Field from './components/Field';
 
 interface EditHabitProps {
     navigation: any,
@@ -14,10 +15,12 @@ interface EditHabitProps {
 const EditHabit = (props: EditHabitProps) => {
 
     const { id } = props.route.params;
-    const [data, setData] = React.useState('');
+    const [data, setData]: any = React.useState('');
+    const [name, setName] = React.useState('');
+    const [description, setDescription] = React.useState('');
 
     React.useEffect(() => {
-        console.log("Fetching data for id: " + id)
+        console.log(`id: ${id}, name: ${data.name}, desc: ${data.description}`)
         db.transaction(tx => {
             tx.executeSql(
                 'SELECT * from Habits where id = ?',
@@ -31,6 +34,11 @@ const EditHabit = (props: EditHabitProps) => {
             );
         });
     }, [])
+
+    React.useEffect(() => {
+        setName(data.name);
+        setDescription(data.description);
+    }, [data])
 
     const deleteHabit = () => {
         db.transaction(tx => {
@@ -61,12 +69,13 @@ const EditHabit = (props: EditHabitProps) => {
             <View style={systemStyle.header}>
                 <Text style={systemStyle.headerTitle}>Edit habit</Text>
             </View>
-            <View style={[systemStyle.body]}>
+            <View style={[systemStyle.body, styles.body]}>
                 <Text>id: {id}</Text>
-                <Text>name: {data.name}</Text>
+                <Field placeholder='Name' value={name} updateValue={setName} />
+                <Field placeholder='Description' value={description} updateValue={setDescription} multiline lines={4} />
             </View>
             <View style={systemStyle.footer}>
-                <TouchableOpacity onPress={deleteHabit}>
+                <TouchableOpacity onPress={deleteHabit} style={{ padding: 6, }}>
                     <FontAwesome5 name={'trash'} size={34} light />
                 </TouchableOpacity>
             </View>
@@ -83,5 +92,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#e0fcff',
-    }
+    },
+    body: {
+        justifyContent: 'center',
+    },
+    footer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        minWidth: '100%',
+    },
+    footerBtn: {
+        color: '#242424',
+        fontSize: 22,
+        fontWeight: 'bold',
+    },
 });

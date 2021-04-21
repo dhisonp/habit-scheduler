@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import Field from './components/Field';
 import { systemStyle } from './HomeScreen';
 import db from './database/SQLite';
@@ -13,9 +13,9 @@ interface NewHabitProps {
 
 const NewHabit = (props: NewHabitProps) => {
 
-    var [name, updateName] = React.useState('');
-    var [time, updateTime] = React.useState('');
-    var [description, updateDescription] = React.useState('');
+    var [name, setName] = React.useState(''); //Add validation (char limit)
+    var [time, setTime] = React.useState('');
+    var [description, setDescription] = React.useState('');
 
     const onBack = () => {
         props.navigation.dispatch(
@@ -25,9 +25,18 @@ const NewHabit = (props: NewHabitProps) => {
     }
 
     const update = () => {
-        alert("Saved!")
-        console.log(`New habit entry: ${name}`)
-        onBack();
+        Alert.alert(
+            'Success',
+            'Habit added',
+            [
+                {
+                    text: 'Ok',
+                    onPress: onBack,
+                },
+            ],
+            { cancelable: false }
+        );
+        console.log(`New habit entry: ${name}, ${description}`)
     }
 
     const onSave = () => {
@@ -36,7 +45,7 @@ const NewHabit = (props: NewHabitProps) => {
         // let id = uuid();
 
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO Habits(name) VALUES (?)', [newName], update());
+            tx.executeSql('INSERT INTO Habits (name, description) VALUES (?,?)', [newName, description], update());
         });
     }
 
@@ -51,8 +60,8 @@ const NewHabit = (props: NewHabitProps) => {
                 </View>
                 <View style={systemStyle.body}>
                     <ScrollView contentContainerStyle={systemStyle.scrollview}>
-                        <Field placeholder="Habit name" value={name} updateValue={updateName} />
-                        <Field placeholder="Description" value={description} updateValue={updateDescription} multiline={true} lines={4} />
+                        <Field placeholder="Habit name" value={name} updateValue={setName} />
+                        <Field placeholder="Description" value={description} updateValue={setDescription} multiline={true} lines={4} />
                         {/* Time field */}
                     </ScrollView>
                 </View>

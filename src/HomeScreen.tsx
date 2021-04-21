@@ -41,6 +41,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                     setHabits(temp);
                 },
                 (tx, error) => {
+                    alert("Error on fetching habits!")
                     console.log("Error: ")
                     console.log(error);
                 }
