@@ -37,11 +37,11 @@ export default Field;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        width: '60%',
+        minWidth: '55%',
         minHeight: 40,
         borderRadius: 14,
         paddingHorizontal: 8,
-        paddingVertical: 2,
+        paddingVertical: 4,
         marginVertical: 6,
     }
 });

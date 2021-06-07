@@ -6,6 +6,7 @@ import db from './database/SQLite';
 import { StackActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import Field from './components/Field';
+import TimePicker from './components/TimePicker';
 
 interface EditHabitProps {
     navigation: any,
@@ -73,6 +74,7 @@ const EditHabit = (props: EditHabitProps) => {
                 <Text>id: {id}</Text>
                 <Field placeholder='Name' value={name} updateValue={setName} />
                 <Field placeholder='Description' value={description} updateValue={setDescription} multiline lines={4} />
+                <TimePicker />
             </View>
             <View style={systemStyle.footer}>
                 <TouchableOpacity onPress={deleteHabit} style={{ padding: 6, }}>

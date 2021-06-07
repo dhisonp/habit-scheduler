@@ -3,5 +3,5 @@ Front-end: React Native (TypeScript)
 Database: Firebase
 
 - To Do -
-Habits detail screen and delete Habits
+Add time
 Notifications

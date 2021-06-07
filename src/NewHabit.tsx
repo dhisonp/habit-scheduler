@@ -5,6 +5,7 @@ import Field from './components/Field';
 import { systemStyle } from './HomeScreen';
 import db from './database/SQLite';
 import { StackActions } from '@react-navigation/native';
+import TimePicker from './components/TimePicker';
 // import { v4 as uuid } from 'uuid';
 
 interface NewHabitProps {
@@ -62,6 +63,7 @@ const NewHabit = (props: NewHabitProps) => {
                     <ScrollView contentContainerStyle={systemStyle.scrollview}>
                         <Field placeholder="Habit name" value={name} updateValue={setName} />
                         <Field placeholder="Description" value={description} updateValue={setDescription} multiline={true} lines={4} />
+                        <TimePicker />
                         {/* Time field */}
                     </ScrollView>
                 </View>
